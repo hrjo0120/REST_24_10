@@ -7,18 +7,20 @@ spring:
     url: jdbc:mariadb://127.0.0.1:3306/rest_24_10__dev?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
     username: root
     password:
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
       hibernate:
-        ddl-auto: create
-      properties:
-        hibernate:
-          show_sql: true
-          format_sql: true
-          use_sql_comments: true
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
 logging:
   level:
     root: info
-    com.example.rest_24_10 : DEBUG
+    com.koreait.rest_24_10 : DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.orm.jdbc.extract: TRACE
 custom:
   site:
     baseUrl: http://localhost
