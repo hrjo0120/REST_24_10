@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -45,14 +46,19 @@ public class MemberControllerTests {
                 .andDo(print());
 
         //Then
-        resultActions.andExpect(status().is2xxSuccessful());
+        resultActions.andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.resultCode").value("S-1"))
+                .andExpect(jsonPath("$.msg").exists())
+                .andExpect(jsonPath("$.data.accessToken").exists());
 
-        MvcResult mvcResult = resultActions.andReturn();
+//        헤더에 액세스 토큰 정보가 없으면 어떻게 판별할 것인지는 위 코드에 있음
 
-        MockHttpServletResponse response = mvcResult.getResponse();
+//        MvcResult mvcResult = resultActions.andReturn();
+//
+//        MockHttpServletResponse response = mvcResult.getResponse();
 
-        String authentication = response.getHeader("Authentication");
-
-        assertThat(authentication).isNotEmpty();
+//        membercontroller에 resp.addHeader("Authentication", accessToken);가 없으면 이 부분도 필요하지 않게 된다.
+//        String authentication = response.getHeader("Authentication");
+//        assertThat(authentication).isNotEmpty();
     }
 }
