@@ -78,7 +78,7 @@ public class MemberControllerTests {
         resultActions.andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.resultCode").value("S-1"))
                 .andExpect(jsonPath("$.msg").exists())
-                .andExpect(jsonPath("$.data.memberDto.id").exists())
-                .andExpect(jsonPath("$.data.member.username").value("user1"));
+                .andExpect(jsonPath("$.data.member.id").exists())
+                .andExpect(jsonPath("$.data.member.userName").value("user1"));
     }
 }
