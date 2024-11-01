@@ -33,8 +33,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             String token = bearerToken.substring("Bearer ".length());
             if (jwtProvider.verify(token)) {
                 Map<String, Object> claims = jwtProvider.getClaims(token);
-                String username = (String) claims.get("username");
-                Member member = memberService.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+                //String username = (String) claims.get("username");
+                //Member member = memberService.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+                long id = (int) claims.get("id");
+                Member member = memberService.findById(id).orElse(null);
                 forceAuthentication(member);
             }
         }
