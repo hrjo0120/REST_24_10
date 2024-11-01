@@ -22,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(value = "/api/v1/member", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-public class Api1MemberController {
+public class ApiV1MemberController {
     private final MemberService memberService;
 
     @Data
