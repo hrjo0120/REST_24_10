@@ -1,5 +1,6 @@
 package com.koreait.rest_24_10.base.security;
 
+import com.koreait.rest_24_10.base.security.filter.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -15,6 +17,8 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class ApiSecurityConfig {
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -30,14 +34,14 @@ public class ApiSecurityConfig {
                 .formLogin().disable()  // 폼 로그인 방식 끄기
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(STATELESS)
-                );  // 세션 끄기
+                ) // 세션 끄기
+                .addFilterBefore(
+                        jwtAuthorizationFilter, // 액세스 토큰으로부터 로그인 처리
+                        UsernamePasswordAuthenticationFilter.class
+                );
+
 
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
 
@@ -64,5 +68,10 @@ user를 만들어서 Spring Security에 등록시킨다.
 (유저를 등록해놔도 유지되지는 않는다.)
 
 결론: 액세스 토큰 넘겨줄 때 유저를 만들고 등록을 시켜준다.
+
+---
+
+Servlet: 동적 웹 페이지를 만들 때 사용되는 자바 기반의 웹 애플리케이션 프로그래밍 기술
+
 
  */
